@@ -1,15 +1,21 @@
 package com.vdovin.leetcode150.block21_math;
 
 public class Task9 {
-    public boolean isPalindrome(int x) {
-        String s = String.valueOf(x);
-        int l = 0, r = s.length() - 1;
-        while (l <= r) {
-            if (s.charAt(l) != s.charAt(r))
-                return false;
-            l++;
-            r--;
+    //Time: O(n)
+    //Space: O(1)
+    public static boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        int reversed = 0;
+        int temp = x;
+        while (temp > 0) {
+            int digit = temp % 10;
+            temp /= 10;
+            reversed = reversed * 10 + digit;
         }
-        return true;
+        return x == reversed;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isPalindrome(-121));
     }
 }
