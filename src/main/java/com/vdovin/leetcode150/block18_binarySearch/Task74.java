@@ -1,25 +1,22 @@
 package com.vdovin.leetcode150.block18_binarySearch;
 
 public class Task74 {
-    //Time: O(m * logn)
+    //Time: O(log(n * m))
     //Space: O(1)
     public static boolean searchMatrix(int[][] matrix, int target) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
             return false;
         }
         int m = matrix.length, n = matrix[0].length;
-        for (int i = 0; i < m; i++) {
-            int l = 0, r = n - 1;
-            while (l <= r) {
-                int mid = l + (r - l) / 2;
-                if (matrix[i][mid] == target) {
-                    return true;
-                }
-                if (matrix[i][mid] < target) {
-                    l = mid + 1;
-                } else {
-                    r = mid - 1;
-                }
+        int i = 0, j = n - 1;
+        while (i < m && j >= 0) {
+            if (matrix[i][j] == target) {
+                return true;
+            }
+            if (matrix[i][j] > target) {
+                j--;
+            } else {
+                i++;
             }
         }
         return false;
