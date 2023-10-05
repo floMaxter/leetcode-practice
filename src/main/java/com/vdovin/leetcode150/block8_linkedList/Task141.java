@@ -16,13 +16,14 @@ public class Task141 {
 
     public static boolean hasCycle(ListNode head) {
         if (head == null || head.next == null) return false;
-        HashSet<ListNode> hashSet = new HashSet<>();
-        while (head != null) {
-            if (hashSet.contains(head)) {
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
                 return true;
             }
-            hashSet.add(head);
-            head = head.next;
         }
         return false;
     }
