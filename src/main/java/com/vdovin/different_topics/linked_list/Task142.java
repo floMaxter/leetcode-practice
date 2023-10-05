@@ -1,9 +1,5 @@
 package com.vdovin.different_topics.linked_list;
 
-import com.vdovin.leetcode150.block8_linkedList.Task141;
-
-import java.util.HashSet;
-
 public class Task142 {
     public static class ListNode {
         int val;
@@ -16,13 +12,18 @@ public class Task142 {
 
     public static ListNode detectCycle(ListNode head) {
         if (head == null || head.next == null) return null;
-        HashSet<ListNode> hashSet = new HashSet<>();
-        while (head != null) {
-            if (hashSet.contains(head)) {
-                return head;
+        ListNode s = head, f = head;
+        ListNode t = head;
+        while (f != null && f.next != null) {
+            s = s.next;
+            f = f.next.next;
+            if (s == f) {
+                while (s != t) {
+                    s = s.next;
+                    t = t.next;
+                }
+                return s;
             }
-            hashSet.add(head);
-            head = head.next;
         }
         return null;
     }
