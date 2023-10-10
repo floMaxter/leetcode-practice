@@ -1,5 +1,7 @@
 package com.vdovin.leetcode150.block9_binaryTreeGeneral;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.Stack;
 
 public class Task100 {
@@ -7,28 +9,33 @@ public class Task100 {
     //Time: O(min(n, m))
     //Space: O(min(log n, log m))
     public static boolean isSameTree(TreeNode p, TreeNode q) {
-        Stack<TreeNode> stackP = new Stack<>();
-        Stack<TreeNode> stackQ = new Stack<>();
-        while (p != null || !stackP.isEmpty() || q != null || !stackQ.isEmpty()) {
-            while (p != null) {
-                stackP.push(p);
-                p = p.left;
-            }
-            while (q != null) {
-                stackQ.push(q);
-                q = q.left;
-            }
-            if (stackP.size() != stackQ.size()) {
+        if (p == null && q == null) return true;
+        if (p == null || q == null) return false;
+
+        Queue<TreeNode> q1 = new ArrayDeque<>();
+        Queue<TreeNode> q2 = new ArrayDeque<>();
+        q1.add(p);
+        q2.add(q);
+        while (!q1.isEmpty() && !q2.isEmpty()) {
+            TreeNode r1 = q1.remove();
+            TreeNode r2 = q2.remove();
+            if (r1.val != r2.val) {
                 return false;
             }
 
-            p = stackP.pop();
-            q = stackQ.pop();
-            if (p.val != q.val) {
+            if (r1.left != null && r2.left != null) {
+                q1.add(r1.left);
+                q2.add(r2.left);
+            } else if (r1.left != null || r2.left != null) {
                 return false;
             }
-            p = p.right;
-            q = q.right;
+
+            if (r1.right != null && r2.right != null) {
+                q1.add(r1.right);
+                q2.add(r2.right);
+            } else if (r1.right != null || r2.right != null) {
+                return false;
+            }
         }
         return true;
      }
