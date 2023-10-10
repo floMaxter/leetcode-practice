@@ -44,8 +44,4 @@ public class TreeSearch {
             }
         }
     }
-
-    public static void recursiveBFS(BinaryNode root) {
-
-    }
 }

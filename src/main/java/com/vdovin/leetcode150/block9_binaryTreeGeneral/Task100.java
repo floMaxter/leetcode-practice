@@ -2,7 +2,6 @@ package com.vdovin.leetcode150.block9_binaryTreeGeneral;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
-import java.util.Stack;
 
 public class Task100 {
     //Iterative DFS
