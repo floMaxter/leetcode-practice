@@ -3,17 +3,34 @@ package com.vdovin.leetcode150.block9_binaryTreeGeneral;
 import java.util.Stack;
 
 public class Task100 {
-    //Recursive DFS
+    //Iterative DFS
     //Time: O(min(n, m))
     //Space: O(min(log n, log m))
     public static boolean isSameTree(TreeNode p, TreeNode q) {
-        if (p == null && q == null) {
-            return true;
+        Stack<TreeNode> stackP = new Stack<>();
+        Stack<TreeNode> stackQ = new Stack<>();
+        while (p != null || !stackP.isEmpty() || q != null || !stackQ.isEmpty()) {
+            while (p != null) {
+                stackP.push(p);
+                p = p.left;
+            }
+            while (q != null) {
+                stackQ.push(q);
+                q = q.left;
+            }
+            if (stackP.size() != stackQ.size()) {
+                return false;
+            }
+
+            p = stackP.pop();
+            q = stackQ.pop();
+            if (p.val != q.val) {
+                return false;
+            }
+            p = p.right;
+            q = q.right;
         }
-        if (p == null || q == null || p.val != q.val) {
-            return false;
-        }
-        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        return true;
      }
 
     public static void main(String[] args) {
