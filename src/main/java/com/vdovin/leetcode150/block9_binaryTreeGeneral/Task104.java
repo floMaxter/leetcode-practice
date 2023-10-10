@@ -2,20 +2,34 @@ package com.vdovin.leetcode150.block9_binaryTreeGeneral;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Task104 {
-    //Recursive DFS
+    //Iterative BFS
     //Time: O(n)
     //Space: O(n)
     public static int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int leftDepth = maxDepth(root.left);
-        int rightDepth = maxDepth(root.right);
-        return 1 + Math.max(leftDepth, rightDepth);
-    }
+        if (root == null) return 0;
 
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        int count = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size > 0) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+                size--;
+            }
+            count++;
+        }
+        return count;
+    }
 
 
     public static void main(String[] args) {
@@ -23,18 +37,6 @@ public class Task104 {
                 new TreeNode(9),
                 new TreeNode(20, new TreeNode(15), new TreeNode(7)));
         System.out.println(maxDepth(tree));
-    }
-
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode() {}
-        TreeNode(int val) {this.val = val;}
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.right = right;
-            this.left = left;
-        }
+        TreeNode tree2 = new TreeNode();
     }
 }
