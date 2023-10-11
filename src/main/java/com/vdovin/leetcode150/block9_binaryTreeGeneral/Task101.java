@@ -2,27 +2,42 @@ package com.vdovin.leetcode150.block9_binaryTreeGeneral;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Queue;
 
 public class Task101 {
-    //Recursive DFS
+    //BFS
     //Time: O(min(n, m))
     //Space: O(min(n, m))
     public static boolean isSymmetric(TreeNode root) {
         if (root == null) return true;
-        return isSymmetricHelp(root.left, root.right);
-    }
+        if (root.left == null || root.right == null) return root.left == root.right;
 
-    public static boolean isSymmetricHelp(TreeNode left, TreeNode right) {
-        if (left == null && right == null) {
-            return true;
+        Queue<TreeNode> queue1 = new ArrayDeque<>();
+        Queue<TreeNode> queue2 = new ArrayDeque<>();
+        queue1.add(root.left);
+        queue2.add(root.right);
+        while (!queue1.isEmpty() && !queue2.isEmpty()) {
+            TreeNode r1 = queue1.remove();
+            TreeNode r2 = queue2.remove();
+            if (r1.val != r2.val) {
+                return false;
+            }
+
+            if (r1.left != null && r2.right != null) {
+                queue1.add(r1.left);
+                queue2.add(r2.right);
+            } else if (r1.left != null || r2.right != null) {
+                return false;
+            }
+
+            if (r1.right != null && r2.left != null) {
+                queue1.add(r1.right);
+                queue2.add(r2.left);
+            } else if (r1.right != null || r2.left != null) {
+                return false;
+            }
         }
-        if (left == null || right == null) {
-            return false;
-        }
-        if (left.val != right.val) {
-            return false;
-        }
-        return isSymmetricHelp(left.left, right.right) && isSymmetricHelp(left.right, right.left);
+        return true;
     }
 
 
