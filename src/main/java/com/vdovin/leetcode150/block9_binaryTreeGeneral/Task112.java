@@ -8,30 +8,12 @@ public class Task112 {
     public static boolean hasPathSum(TreeNode root, int targetSum) {
         if (root == null) return false;
 
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        Deque<Integer> sum = new ArrayDeque<>();
-        stack.push(root);
-        sum.push(root.val);
-        while (!stack.isEmpty()) {
-            TreeNode node = stack.pop();
-            int currSum = sum.pop();
-            if (node.left == null && node.right == null) {
-                if (currSum == targetSum) {
-                    return true;
-                }
-            } else {
-                if (node.right != null) {
-                    stack.push(node.right);
-                    sum.push(node.right.val + currSum);
-                }
-                if (node.left != null) {
-                    stack.push(node.left);
-                    sum.push(node.left.val + currSum);
-                }
-            }
+        if (root.left == null && root.right == null && root.val == targetSum) {
+            return true;
         }
 
-        return false;
+        return hasPathSum(root.left, targetSum - root.val) ||
+                hasPathSum(root.right, targetSum - root.val);
     }
 
     public static void main(String[] args) {
