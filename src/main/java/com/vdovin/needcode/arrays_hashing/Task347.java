@@ -1,40 +1,51 @@
 package com.vdovin.needcode.arrays_hashing;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class Task347 {
-    //Time: O(n log k)
+    //Time: O(n)
     //Space: O(n)
-    public int[] topKFrequent(int[] nums, int k) {
-        //Count occurrences
-        Map<Integer, Integer> hm = new HashMap<>();
+    public static int[] topKFrequent(int[] nums, int k) {
+        //Count occurrences, create hm, where key = number, value = frequency
+        Map<Integer, Integer> bucket1 = new HashMap<>();
         for (int num : nums) {
-            hm.put(num, hm.getOrDefault(num, 0) + 1);
+            bucket1.put(num, bucket1.getOrDefault(num, 0) + 1);
         }
 
-        //Create min heap
-        Queue<Integer> minHeap = new PriorityQueue<>((a, b) -> hm.get(a) - hm.get(b));
-        for (int num : hm.keySet()) {
-            minHeap.add(num);
-            if (minHeap.size() > k) {
-                minHeap.poll();
+        //Create hm, where key = frequency, key = List<Integer> with number
+        Map<Integer, List<Integer>> bucket2 = new HashMap<>();
+        for (int num : bucket1.keySet()) {
+            Integer elementFreq = bucket1.get(num);
+            if (!bucket2.containsKey(elementFreq)) {
+                bucket2.put(elementFreq, new ArrayList<>());
             }
+            bucket2.get(elementFreq).add(num);
         }
 
-        //Add element from minHeap
+        //Get the values from bucket2
         int[] res = new int[k];
-        int index = 0;
-        while (!minHeap.isEmpty()) {
-            res[index++] = minHeap.poll();
+        for (int i = nums.length; i >= 0; i--) {
+            if (bucket2.containsKey(i)) {
+                List<Integer> list = bucket2.get(i);
+                for (Integer integer : list) {
+                    res[--k] = integer;
+                    if (k == 0) {
+                        return  res;
+                    }
+                }
+            }
         }
         return res;
     }
 
 
     public static void main(String[] args) {
-
+        int[] nums = new int[] {4, 4, 1, 1, 1, 2, 2, 2, 3, 3};
+        int k = 2;
+        System.out.println(Arrays.toString(topKFrequent(nums, k)));
     }
 }
