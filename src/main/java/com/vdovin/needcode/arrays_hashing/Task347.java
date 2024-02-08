@@ -1,7 +1,7 @@
 package com.vdovin.needcode.arrays_hashing;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,33 +11,18 @@ public class Task347 {
     //Space: O(n)
     public static int[] topKFrequent(int[] nums, int k) {
         //Count occurrences, create hm, where key = number, value = frequency
-        Map<Integer, Integer> bucket1 = new HashMap<>();
+        Map<Integer, Integer> freqMap = new HashMap<>();
         for (int num : nums) {
-            bucket1.put(num, bucket1.getOrDefault(num, 0) + 1);
+            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
         }
-
-        //Create hm, where key = frequency, key = List<Integer> with number
-        Map<Integer, List<Integer>> bucket2 = new HashMap<>();
-        for (int num : bucket1.keySet()) {
-            Integer elementFreq = bucket1.get(num);
-            if (!bucket2.containsKey(elementFreq)) {
-                bucket2.put(elementFreq, new ArrayList<>());
-            }
-            bucket2.get(elementFreq).add(num);
-        }
-
-        //Get the values from bucket2
+        //Sorted value by frequency
+        List<Map.Entry<Integer, Integer>> sortedList = freqMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .toList();
+        //Add frequently encountered values to an arr
         int[] res = new int[k];
-        for (int i = nums.length; i >= 0; i--) {
-            if (bucket2.containsKey(i)) {
-                List<Integer> list = bucket2.get(i);
-                for (Integer integer : list) {
-                    res[--k] = integer;
-                    if (k == 0) {
-                        return  res;
-                    }
-                }
-            }
+        for (int i = 0; i < k; i++) {
+            res[i] = sortedList.get(i).getKey();
         }
         return res;
     }
