@@ -2,16 +2,24 @@ package com.vdovin.needcode.two_pointer;
 
 public class Task125 {
     public static boolean isPalindrome(String s) {
-        if (s.length() == 1) return true;
+        if (s.length() <= 1) return true;
 
-        String onlyCharacterStr = s.toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
-        int l = 0, r = onlyCharacterStr.length() - 1;
-        while (l < r) {
-            if (onlyCharacterStr.charAt(l) != onlyCharacterStr.charAt(r)) {
-                return false;
+        int l = 0, r = s.length() - 1;
+        while (l <= r) {
+            char charL = s.charAt(l);
+            char charR = s.charAt(r);
+
+            if (!Character.isLetterOrDigit(charL)) {
+                l++;
+            } else if (!Character.isLetterOrDigit(charR)) {
+                r--;
+            } else {
+                if (Character.toLowerCase(charL) != Character.toLowerCase(charR)) {
+                    return false;
+                }
+                l++;
+                r--;
             }
-            l++;
-            r--;
         }
 
         return true;
