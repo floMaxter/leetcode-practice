@@ -4,20 +4,13 @@ public class Task1455 {
     //Time: O(n^2)
     //Space: O(n)
     public static int isPrefixOfWord(String sentence, String searchWord) {
-        int index = -1;
-        String[] sentenceWords = sentence.split(" ");
-        for (int i = 0; i < sentenceWords.length; i++) {
-            String word = sentenceWords[i];
-            int j = 0;
-            while (j < searchWord.length() && j < word.length() && word.charAt(j) == searchWord.charAt(j)) {
-                j++;
-            }
-            if (j == searchWord.length()) {
-                index = i + 1;
-                break;
+        String[] words = sentence.split(" ");
+        for (int i = 1; i <= sentence.length(); i++) {
+            if (words[i - 1].startsWith(searchWord)) {
+                return i;
             }
         }
-        return index;
+        return -1;
     }
 
     public static void main(String[] args) {
