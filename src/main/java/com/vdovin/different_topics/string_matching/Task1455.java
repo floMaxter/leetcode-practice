@@ -1,13 +1,28 @@
 package com.vdovin.different_topics.string_matching;
 
 public class Task1455 {
-    //Time: O(n^2)
-    //Space: O(n)
+    //Time: O(n * m)
+    //Space: O(1)
     public static int isPrefixOfWord(String sentence, String searchWord) {
-        String[] words = sentence.split(" ");
-        for (int i = 1; i <= sentence.length(); i++) {
-            if (words[i - 1].startsWith(searchWord)) {
-                return i;
+        boolean isWord = true;
+        int wordCount = 1;
+        int searchWordPos = 0;
+        for (int i = 0; i < sentence.length(); i++) {
+            if (isWord) {
+                if (sentence.charAt(i) == searchWord.charAt(searchWordPos)) {
+                    searchWordPos++;
+                    if (searchWordPos == searchWord.length()) {
+                        return wordCount;
+                    }
+                } else {
+                    isWord = false;
+                }
+            }
+
+            if (sentence.charAt(i) == ' ') {
+                isWord = true;
+                searchWordPos = 0;
+                wordCount++;
             }
         }
         return -1;
